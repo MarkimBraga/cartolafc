@@ -1,0 +1,40 @@
+.header {
+  background:#FFFFFF;
+  font-family:Raleway, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing:0.05em;
+  margin:0 auto;
+  width: 768px;
+  padding:1em;
+  text-align:left;
+}
+
+.header h1 {
+  font-size:200%;
+  font-weight:100;
+}
+
+.header h2 {
+  color:#666666;
+  font-size:125%;
+  font-weight:100;
+}
+
+.tabela {
+  margin-left:auto;
+  margin-right:auto;
+  width: 768px;
+  padding-left:1em;
+  padding-right:1em;
+}
+
+span#mercado_status {
+	font-size:90%;
+	font-weight:bold;
+	text-decoration: underline;
+	padding-left: 2em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color:#4B4B4B;
+  font-weight:bold;
+}
