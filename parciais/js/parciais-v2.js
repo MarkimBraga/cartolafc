@@ -13,97 +13,6 @@ function buscarTimes() {
 	});
 }
 
-// versão com as requisições divididas em 3 grupos de sete times
-//function buscarTimes() {
-//	$.when(
-//		$.ajax(dadosMercadoRodada()),
-//		$.ajax(dadosRequisicaoParciais()),
-//		$.ajax(dadosRequisicaoLiga(1)),
-//		$.ajax(dadosRequisicaoLiga(2))
-//	).then(function(mercado_rodada, parciais, ligaPagina1, ligaPagina2) {
-//		$.when(
-//			$.ajax(dadosRequisicaoTime('ftfc')),
-//			$.ajax(dadosRequisicaoTime('nathansccp')),
-//			$.ajax(dadosRequisicaoTime('vozao-da-manibura')),
-//			$.ajax(dadosRequisicaoTime('copobemafc')),
-//			$.ajax(dadosRequisicaoTime('vasco-fortalezense')),
-//			$.ajax(dadosRequisicaoTime('lpgfc')),
-//			$.ajax(dadosRequisicaoTime('papapenta'))
-//		).then(function(time1, time2, time3, time4, time5, time6, time7) {
-//			timesColetadosSite.push(time1, time2, time3, time4, time5, time6, time7);
-//			
-//			$.when(
-//				$.ajax(dadosRequisicaoTime('marujinho-fc')),
-//				$.ajax(dadosRequisicaoTime('whippet-fc')),
-//				$.ajax(dadosRequisicaoTime('junior-black-fut')),
-//				$.ajax(dadosRequisicaoTime('lzn-s-fc')),
-//				$.ajax(dadosRequisicaoTime('mim-acher-fussball-club')),
-//				$.ajax(dadosRequisicaoTime('dlfmecao')),
-//				$.ajax(dadosRequisicaoTime('vozaosc1914'))
-//			).then(function(time8, time9, time10, time11, time12, time13, time14) {
-//				timesColetadosSite.push(time8, time9, time10, time11, time12, time13, time14);
-//				
-//				$.when(
-//					$.ajax(dadosRequisicaoTime('andre-rosario-fc')),
-//					$.ajax(dadosRequisicaoTime('flabreu')),
-//					$.ajax(dadosRequisicaoTime('f-s-c')),
-//					$.ajax(dadosRequisicaoTime('charles-weyne')),
-//					$.ajax(dadosRequisicaoTime('tabajara-cearense')),
-//					$.ajax(dadosRequisicaoTime('quetelle-fc')),
-//					$.ajax(dadosRequisicaoTime('metalmania-fc'))
-//				).then(function(time15, time16, time17, time18, time19, time20, time21) {
-//					timesColetadosSite.push(time15, time16, time17, time18, time19, time20, time21);
-//					
-//					usufruirDadosColetados(mercado_rodada, parciais, ligaPagina1, ligaPagina2);
-//				});
-//			});
-//		});
-//	});
-//}
-
-// versão com todas as requisições juntas
-//function buscarTimes() {
-//	$.when(
-//		$.ajax(dadosMercadoRodada()),
-//		$.ajax(dadosRequisicaoParciais()),
-//		$.ajax(dadosRequisicaoLiga(1)),
-//		$.ajax(dadosRequisicaoLiga(2)),
-//		$.ajax(dadosRequisicaoTime('ftfc')),
-//		$.ajax(dadosRequisicaoTime('nathansccp')),
-//		$.ajax(dadosRequisicaoTime('vozao-da-manibura')),
-//		$.ajax(dadosRequisicaoTime('copobemafc')),
-//		$.ajax(dadosRequisicaoTime('vasco-fortalezense')),
-//		$.ajax(dadosRequisicaoTime('lpgfc')),
-//		$.ajax(dadosRequisicaoTime('papapenta')),
-//		$.ajax(dadosRequisicaoTime('marujinho-fc')),
-//		$.ajax(dadosRequisicaoTime('whippet-fc')),
-//		$.ajax(dadosRequisicaoTime('junior-black-fut')),
-//		$.ajax(dadosRequisicaoTime('lzn-s-fc')),
-//		$.ajax(dadosRequisicaoTime('mim-acher-fussball-club')),
-//		$.ajax(dadosRequisicaoTime('dlfmecao')),
-//		$.ajax(dadosRequisicaoTime('vozaosc1914')),
-//		$.ajax(dadosRequisicaoTime('andre-rosario-fc')),
-//		$.ajax(dadosRequisicaoTime('flabreu')),
-//		$.ajax(dadosRequisicaoTime('f-s-c')),
-//		$.ajax(dadosRequisicaoTime('charles-weyne')),
-//		$.ajax(dadosRequisicaoTime('tabajara-cearense')),
-//		$.ajax(dadosRequisicaoTime('quetelle-fc')),
-//		$.ajax(dadosRequisicaoTime('metalmania-fc'))
-//	).then(function(mercado_rodada, parciais, ligaPagina1, ligaPagina2, time1, time2, time3, time4, time5, 
-//		time6, time7, time8, time9, time10, time11, time12,
-//		time13, time14, time15, time16, time17, time18, 
-//		time19, time20, time21) {
-//		
-//			timesColetadosSite.push(time1, time2, time3, time4, time5, 
-//				time6, time7, time8, time9, time10, time11, time12,
-//				time13, time14, time15, time16, time17, time18, 
-//				time19, time20, time21);
-//		
-//			usufruirDadosColetados(mercado_rodada, parciais, ligaPagina1, ligaPagina2);
-//		}
-//	);
-//}
-
 function usufruirDadosColetados(mercado_rodada, parciais, ligaPagina1, ligaPagina2) {
 	obterInformacoesRodadaMercado(mercado_rodada);
 	exibirInformacoesRodadaMercado();
@@ -112,7 +21,7 @@ function usufruirDadosColetados(mercado_rodada, parciais, ligaPagina1, ligaPagin
 	if(statusAtualMercado == 2) {
 		obterParciaisJogadores(parciais);
 	}
-	
+
 	coletarTimesDoSite();
 	obterInformacoesDosTimes();
 	ordenarPorPontuacaoGeral();
@@ -137,7 +46,7 @@ function obterTimesNaLiga(pagina1, pagina2) {
 }
 
 function coletarTimesDoSite() {
-	for(time in timesLiga) {
+	for(var time in timesLiga) {
 		dadosRequisicaoTime(timesLiga[time].slug);
     }
 }
@@ -145,7 +54,7 @@ function coletarTimesDoSite() {
 function obterInformacoesDosTimes() {
 	var timeSite = null;
 	
-	for(x in timesColetadosSite) {
+	for(var x in timesColetadosSite) {
 		var timeMontado = null,
 			pontuacaoTime = 0;
 		
@@ -154,16 +63,6 @@ function obterInformacoesDosTimes() {
 		timeMontado = obterTimeMontado(timeSite, pontuacaoTime);
 		timesTabela.push(timeMontado);
 	}
-	
-//	for(x in timesColetadosSite) {
-//		var timeMontado = null,
-//			pontuacaoTime = 0;
-//		
-//		timeSite = timesColetadosSite[x];
-//		pontuacaoTime = obterPontuacaoTime(timeSite[0]);
-//		timeMontado = obterTimeMontado(timeSite[0], pontuacaoTime);
-//		timesTabela.push(timeMontado);
-//	}
 }
 
 function obterPontuacaoTime(time) {
@@ -172,12 +71,15 @@ function obterPontuacaoTime(time) {
 		pontuacaoJogador = 0,
 		jogadores = time.atletas,
 		retorno = {pontuacao: 0, quantidade: 0};
-		
-	for(y in jogadores) {
+
+	for(var y in jogadores) {
 		pontuacaoJogador = obterPontuacaoJogador(jogadores[y]);
 		
-		if(pontuacaoJogador != null) {
+		if(pontuacaoJogador != null && pontuacaoJogador != 0) {
 			pontuacaoTime += pontuacaoJogador;
+			qtdJogadoresPontuados += 1;
+		} else if(statusAtualMercado != 1 && partidaIniciada(jogadores[y])) {
+			pontuacaoTime += 0.00;
 			qtdJogadoresPontuados += 1;
 		}
 	}
@@ -199,6 +101,25 @@ function obterPontuacaoJogador(jogador) {
 	return pontuacao;
 }
 
+function partidaIniciada(jogador) {
+	var iniciou = false,
+		dataBruta = jogador.partida.partida_data,
+		dataPartida = "",
+		dataAgora = new Date();
+	
+	if(dataBruta == null || dataBruta == "") {
+		iniciou = true;
+	} else {
+		dataPartida = new Date(dataBruta);
+	
+		if(dataPartida <= dataAgora) {
+			iniciou = true;
+		}
+	}
+
+	return iniciou;
+}
+
 function obterTimeMontado(time, pontuacao) {
 	var timeMontado = {};
 	
@@ -206,13 +127,8 @@ function obterTimeMontado(time, pontuacao) {
 	timeMontado.nome = time.time.nome;
 	timeMontado.qtdPontuados = pontuacao.quantidade;
 	timeMontado.pontuacaoParcial = pontuacao.pontuacao;
-	//timeMontado.pontuacaoMedia = 0;
 	timeMontado.pontuacaoAnterior = obterPontuacaoNoTurno(time);
 	timeMontado.pontuacaoGeral = timeMontado.pontuacaoParcial + timeMontado.pontuacaoAnterior;
-	
-	//if(timeMontado.qtdPontuados > 0) {
-		//timeMontado.pontuacaoMedia = timeMontado.pontuacaoParcial/timeMontado.qtdPontuados;
-	//}
 	
 	return timeMontado;
 }
@@ -275,7 +191,6 @@ function exibirInformacoesDosTimes() {
 		var id_nome = timesTabela[x].id + "_nome",
 			id_pontuacao_parcial = timesTabela[x].id + "_pontuacao_parcial",
 			id_qtd_pontuados = timesTabela[x].id + "_pontuados",
-			//id_media = timesTabela[x].id + "_media",
 			id_pontuacao_geral = timesTabela[x].id + "_pontuacao_geral",
 			id_pontuacao_soma = timesTabela[x].id + "_pontuacao_soma",
 			linha = (index % 2 != 0) ? "<tr>" : "<tr class='pure-table-odd'>";
@@ -283,21 +198,15 @@ function exibirInformacoesDosTimes() {
 		linha += "<td>" + index + "</td><td id=" + id_nome + "></td><td id=" + id_qtd_pontuados + "></td><td id=" + id_pontuacao_parcial + "></td><td id=" + id_pontuacao_geral + "></td><td id=" + id_pontuacao_soma + "></td></tr>";
 		$("#tabela-pontos tbody").append(linha);
 		
-		//linha com media
-		//linha += "<td>" + index + "</td><td id=" + id_nome + "></td><td id=" + id_qtd_pontuados + "></td><td id=" + id_pontuacao_parcial + "></td><td id=" + id_media + "></td><td id=" + id_pontuacao_geral + "></td><td id=" + id_pontuacao_soma + "></td></tr>";
-		//$("#tabela-pontos tbody").append(linha);
-	
 		var _team_nome = $("#"+id_nome),
 			_team_pontuacao_parcial = $("#"+id_pontuacao_parcial),
 			_team_qtd_pontuados = $("#"+id_qtd_pontuados),
-			//_team_media = $("#"+id_media),
 		    _team_pontuacao_geral = $("#"+id_pontuacao_geral),
 			_team_pontuacao_soma = $("#"+id_pontuacao_soma);
 		
 		_team_nome.html(timesTabela[x].nome);
 	    _team_pontuacao_parcial.html(timesTabela[x].pontuacaoParcial.toFixed(2));
 	    _team_qtd_pontuados.html(timesTabela[x].qtdPontuados);
-	    //_team_media.html(timesTabela[x].pontuacaoMedia.toFixed(2));
 	    _team_pontuacao_geral.html(timesTabela[x].pontuacaoAnterior.toFixed(2));
 	    _team_pontuacao_soma.html(timesTabela[x].pontuacaoGeral.toFixed(2));
 	    
@@ -312,7 +221,7 @@ function dadosRequisicaoTime(slug) {
 		type: "GET",
 		contentType: "application/json",
 		cache: false,
-		url: "load-api.php",
+		url: "load-api-v2.php",
 		timeout: 20000,
 		async: false,
 		data: {
@@ -329,30 +238,13 @@ function dadosRequisicaoTime(slug) {
 	});
 }
 
-//function dadosRequisicaoTime(slug) {
-//	return {
-//		type: "GET",
-//		contentType: "application/json",
-//		cache: false,
-//		url: "load-api.php",
-//		data: {
-//    		api: "busca-atletas",
-//    		team_slug: slug
-//    	},
-//    	error: function(jqXHR, textStatus, errorThrown) {
-//    		exibirMensagemErro();
-//    		return false;
-//    	}
-//	}
-//}
-
 function dadosRequisicaoParciais() {
 	return {
 	    type: "GET",
 	    contentType: "application/json",
 	    dataType: "json",
 	    cache: false,
-	    url: "load-api.php?api=parciais-atletas",
+	    url: "load-api-v2.php?api=parciais-atletas",
 	timeout: 20000,
     	error: function(jqXHR, textStatus, errorThrown) {
     		exibirMensagemErro();
@@ -366,7 +258,7 @@ function dadosRequisicaoLiga(pagina) {
     	type: "GET",
 	    contentType: "application/json",
 	    cache: false,
-	    url: "load-api-auth.php",
+	    url: "load-api-auth-v2.php",
 	    data: {
 			api: "liga",
 			page: pagina,
@@ -386,7 +278,7 @@ function dadosMercadoRodada() {
 	    contentType: "application/json",
 	    dataType: "json",
 	    cache: false,
-	    url: "load-api.php?api=mercado-status",
+	    url: "load-api-v2.php?api=mercado-status",
 	    timeout: 20000,
 		error: function(jqXHR, textStatus, errorThrown) {
 			exibirMensagemErro();
@@ -416,3 +308,4 @@ var rodadaAtual = 0,
 	  	4:'Mercado em manutenção!'
 	};
 	
+
