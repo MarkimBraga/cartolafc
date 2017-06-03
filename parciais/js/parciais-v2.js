@@ -19,6 +19,7 @@ function usufruirDadosColetados(mercado_rodada, parciais, ligaPagina1, ligaPagin
 	obterTimesNaLiga(ligaPagina1, ligaPagina2);
 	
 	if(statusAtualMercado == 2) {
+		obterPartidasRodada();
 		obterParciaisJogadores(parciais);
 	}
 
@@ -30,7 +31,7 @@ function usufruirDadosColetados(mercado_rodada, parciais, ligaPagina1, ligaPagin
 
 function obterInformacoesRodadaMercado(mercado_rodada) {
 	statusAtualMercado = mercado_rodada[0].status_mercado;
-    rodadaAtual = mercado_rodada[0].rodada_atual;
+	rodadaAtual = mercado_rodada[0].rodada_atual;
 }
 
 function obterParciaisJogadores(parciais) {
@@ -103,13 +104,12 @@ function obterPontuacaoJogador(jogador) {
 
 function partidaIniciada(jogador) {
 	var iniciou = false,
-		dataBruta = jogador.partida.partida_data,
+		clube = jogador.clube_id,
+		dataBruta = obterDataBruta(jogador),
 		dataPartida = "",
 		dataAgora = new Date();
 	
-	if(dataBruta == null || dataBruta == "") {
-		iniciou = true;
-	} else {
+	if(dataBruta != null && dataBruta.trim() != "") {
 		dataPartida = new Date(dataBruta);
 	
 		if(dataPartida <= dataAgora) {
@@ -118,6 +118,23 @@ function partidaIniciada(jogador) {
 	}
 
 	return iniciou;
+}
+
+function obterDataBruta(jogador) {
+	var partidas = partidasCampeonato.partidas;
+    var clube = jogador.clube_id;
+    var dataBruta = null;
+       
+    for(var i = 0; i < partidas.length; i++) {
+      var partida = partidas[i];
+      
+      if (clube == partida.clube_casa_id || clube == partida.clube_visitante_id) {	       
+        dataBruta = partida.partida_data;
+        break;
+      }
+    }  
+
+    return dataBruta;   
 }
 
 function obterTimeMontado(time, pontuacao) {
@@ -216,6 +233,29 @@ function exibirInformacoesDosTimes() {
 	acionarBotoesOrdenacao();
 }
 
+function obterPartidasRodada() {
+	$.ajax({
+		type: "GET",
+		contentType: "application/json",
+		cache: false,
+		url: "load-api-v2.php",
+		timeout: 20000,
+		async: false,
+		data: {
+    		api: "partidas",
+    		rodada: rodadaAtual
+    	},
+    	success: function(partidas) {
+    		partidasCampeonato = {};
+    		partidasCampeonato = partidas;      
+	    },
+    	error: function(jqXHR, textStatus, errorThrown) {
+    		exibirMensagemErro();
+    		return false;
+    	}
+	});
+}
+
 function dadosRequisicaoTime(slug) {
 	$.ajax({
 		type: "GET",
@@ -245,7 +285,7 @@ function dadosRequisicaoParciais() {
 	    dataType: "json",
 	    cache: false,
 	    url: "load-api-v2.php?api=parciais-atletas",
-	timeout: 20000,
+		timeout: 20000,
     	error: function(jqXHR, textStatus, errorThrown) {
     		exibirMensagemErro();
     		return false;
@@ -296,6 +336,7 @@ function exibirMensagemErro() {
 
 var rodadaAtual = 0,
 	statusAtualMercado = 0,
+	partidasCampeonato = {},
 	jogadoresPontuadosSite = {},
 	timesColetadosSite = [],
 	timesLiga = [],

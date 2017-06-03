@@ -32,8 +32,22 @@
     else if ($_GET["api"] === "atleta-pontuacao") {
       $url = "https://api.cartolafc.globo.com/auth/mercado/atleta/". $_GET["atleta_id"] ."/pontuacao";
     }
+
+    $c = curl_init();
+    curl_setopt($c, CURLOPT_URL, $url);
+    curl_setopt($c, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; rv:53.0) Gecko/20100101 Firefox/53.0");
+    curl_setopt($c, CURLOPT_HTTPHEADER, array('X-GLB-Token: '.$_SESSION['glbId']));
+    curl_setopt($c, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($c, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($c, CURLOPT_FRESH_CONNECT, TRUE);
+    curl_setopt($c, CURLOPT_VERBOSE, TRUE);
+    $result = curl_exec($c);
     
-    $json = exec("curl -X GET ". $url ." -H 'x-glb-token: ". $_SESSION['glbId'] ."'");
-    echo $json;
+    if ($result === FALSE) {
+      die(curl_error($c));
+    }
+    
+    curl_close($c);
+    echo $result;
   }
 ?>

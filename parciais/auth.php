@@ -19,6 +19,7 @@
   $c = curl_init();
   curl_setopt($c, CURLOPT_URL, $url);
   curl_setopt($c, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+  curl_setopt($c, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; rv:53.0) Gecko/20100101 Firefox/53.0");
   curl_setopt($c, CURLOPT_POST, true);
   curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
   curl_setopt($c, CURLOPT_RETURNTRANSFER, true);

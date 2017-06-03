@@ -24,7 +24,13 @@
       $url = "https://api.cartolafc.globo.com/partidas/". $_GET["rodada"];
     }
   
-    $json = exec("curl -X GET ".$url);
-    echo $json;
+    $c = curl_init();
+    curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($c, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; rv:53.0) Gecko/20100101 Firefox/53.0");
+    curl_setopt($c, CURLOPT_URL, $url);
+    $result = curl_exec($c);
+    curl_close($c);
+    echo $result;
   }
 ?>
