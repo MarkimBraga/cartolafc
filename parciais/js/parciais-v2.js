@@ -246,12 +246,18 @@ function obterPartidasRodada() {
     		rodada: rodadaAtual
     	},
     	success: function(partidas) {
+    		tentativasM1 = 1;
     		partidasCampeonato = {};
     		partidasCampeonato = partidas;      
 	    },
     	error: function(jqXHR, textStatus, errorThrown) {
-    		exibirMensagemErro();
-    		return false;
+    		if(tentativasM1 < 10) {
+    			tentativasM1 = tentativasM1 + 1;
+    			obterPartidasRodada();
+    		} else {
+	    		exibirMensagemErro("M1");
+	    		return false;
+	    	}
     	}
 	});
 }
@@ -269,11 +275,17 @@ function dadosRequisicaoTime(slug) {
     		team_slug: slug
     	},
     	success: function(timeSite) {
+    		tentativasM2 = 1;
     		timesColetadosSite.push(timeSite);      
 	    },
     	error: function(jqXHR, textStatus, errorThrown) {
-    		exibirMensagemErro();
-    		return false;
+    		if(tentativasM2 < 10) {
+    			tentativasM2 = tentativasM2 + 1;
+    			dadosRequisicaoTime(slug);
+    		} else {
+    			exibirMensagemErro("M2");
+    			return false;
+    		}
     	}
 	});
 }
@@ -287,8 +299,13 @@ function dadosRequisicaoParciais() {
 	    url: "load-api-v2.php?api=parciais-atletas",
 		timeout: 20000,
     	error: function(jqXHR, textStatus, errorThrown) {
-    		exibirMensagemErro();
-    		return false;
+    		if(tentativasM3 < 10) {
+    			tentativasM3 = tentativasM3 + 1;
+    			dadosRequisicaoParciais();
+    		} else {
+	    		exibirMensagemErro("M3");
+	    		return false;
+	    	}
     	}
 	}
 }
@@ -306,8 +323,13 @@ function dadosRequisicaoLiga(pagina) {
 	    },
 	    timeout: 20000,
 	    error: function (jqXHR, textStatus, errorThrown) {
-	    	exibirMensagemErro();
-	    	return false;
+	    	if(tentativasM4 < 10) {
+    			tentativasM4 = tentativasM4 + 1;
+    			dadosRequisicaoLiga(pagina);
+    		} else {
+	    		exibirMensagemErro("M4");
+	    		return false;
+	    	}
 	    }
     }
 }
@@ -321,20 +343,30 @@ function dadosMercadoRodada() {
 	    url: "load-api-v2.php?api=mercado-status",
 	    timeout: 20000,
 		error: function(jqXHR, textStatus, errorThrown) {
-			exibirMensagemErro();
-			return false;
+			if(tentativasM5 < 10) {
+    			tentativasM5 = tentativasM5 + 1;
+    			dadosMercadoRodada();
+    		} else {
+	    		exibirMensagemErro("M5");
+	    		return false;
+	    	}
 		}
 	};
 }
 
-function exibirMensagemErro() {
+function exibirMensagemErro(origem) {
 	if(!existeFalha) {
 		existeFalha = true;
-		alert("Globo.com - Desculpe-nos, nossos servidores est\xE3o sobrecarregados.");
+		alert("Globo.com - Desculpe-nos, nossos servidores est\xE3o sobrecarregados. Cod: " + origem);
 	}
 }
 
 var rodadaAtual = 0,
+	tentativasM1 = 1,
+	tentativasM2 = 1,
+	tentativasM3 = 1,
+	tentativasM4 = 1,
+	tentativasM5 = 1,
 	statusAtualMercado = 0,
 	partidasCampeonato = {},
 	jogadoresPontuadosSite = {},
