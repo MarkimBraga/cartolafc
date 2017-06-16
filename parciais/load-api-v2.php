@@ -31,6 +31,11 @@
     curl_setopt($c, CURLOPT_URL, $url);
     $result = curl_exec($c);
     curl_close($c);
-    echo $result;
+    
+    if($result == "") {
+      echo 'null';
+    } else {
+      echo $result;
+    }   
   }
 ?>
