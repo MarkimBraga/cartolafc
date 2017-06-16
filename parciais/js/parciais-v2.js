@@ -1,4 +1,26 @@
+function move() {
+	var elem = document.getElementById("myBar"); 
+	var width = qtdReqTotal;
+	var id = setInterval(frame, 10);
+
+	function frame() {
+		if(width > 0 && (qtdReqExecutas < qtdReqTotal)) {
+			elem.style.width = qtdReqTotal/qtdReqExecutas + '%'; 
+		} else {
+			clearInterval(id);
+		}
+		
+		/*if (width >= 100) {
+			clearInterval(id);
+		} else {
+			width++; 
+			elem.style.width = width + '%'; 
+		}*/
+	}
+}
+
 $(document).ready(function() {
+	//move();
 	buscarTimes();
 });
 
@@ -154,7 +176,7 @@ function obterPontuacaoNoTurno(time) {
 	var id = time.time.slug,
 		pontos = 0;
 	
-	// Início de segundo turno
+	// Inï¿½cio de segundo turno
 	if(rodadaAtual == 20) {
 		pontos = 0;
 	} else {
@@ -247,8 +269,9 @@ function obterPartidasRodada() {
     	},
     	success: function(partidas) {
     		tentativasM1 = 1;
+			qtdReqExecutas++;
     		partidasCampeonato = {};
-    		partidasCampeonato = partidas;      
+    		partidasCampeonato = partidas;			   
 	    },
     	error: function(jqXHR, textStatus, errorThrown) {
     		if(tentativasM1 < 10) {
@@ -276,6 +299,7 @@ function dadosRequisicaoTime(slug) {
     	},
     	success: function(timeSite) {
     		tentativasM2 = 1;
+			qtdReqExecutas++;
     		timesColetadosSite.push(timeSite);      
 	    },
     	error: function(jqXHR, textStatus, errorThrown) {
@@ -298,6 +322,9 @@ function dadosRequisicaoParciais() {
 	    cache: false,
 	    url: "load-api-v2.php?api=parciais-atletas",
 		timeout: 20000,
+		success: function() {
+			qtdReqTotal++;
+		},
     	error: function(jqXHR, textStatus, errorThrown) {
     		if(tentativasM3 < 10) {
     			tentativasM3 = tentativasM3 + 1;
@@ -322,6 +349,11 @@ function dadosRequisicaoLiga(pagina) {
 			liga_slug: "ases-fortaleza-ceara"
 	    },
 	    timeout: 20000,
+		success: function(timesLiga) {	
+			for(var x in timesLiga.times) {
+				qtdReqTotal++;
+			}
+		},
 	    error: function (jqXHR, textStatus, errorThrown) {
 	    	if(tentativasM4 < 10) {
     			tentativasM4 = tentativasM4 + 1;
@@ -342,6 +374,9 @@ function dadosMercadoRodada() {
 	    cache: false,
 	    url: "load-api-v2.php?api=mercado-status",
 	    timeout: 20000,
+		success: function() {
+			qtdReqTotal++;
+		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			if(tentativasM5 < 10) {
     			tentativasM5 = tentativasM5 + 1;
@@ -374,11 +409,13 @@ var rodadaAtual = 0,
 	timesLiga = [],
 	timesTabela = [],
 	existeFalha = false,
+	qtdReqTotal = 1, //1 referente a obterPartidasRodada() 
+	qtdReqExecutas = 0,
 	statusMercado = {
 		1:'Mercado aberto!',
 	  	2:'Mercado fechado!',
-	  	3:'Mercado em atualização!',
-	  	4:'Mercado em manutenção!'
+	  	3:'Mercado em atualizaï¿½ï¿½o!',
+	  	4:'Mercado em manutenï¿½ï¿½o!'
 	};
 	
 

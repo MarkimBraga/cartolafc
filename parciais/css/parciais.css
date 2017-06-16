@@ -38,3 +38,14 @@ h1, h2, h3, h4, h5, h6 {
   color:#4B4B4B;
   font-weight:bold;
 }
+
+#myProgress {
+    width: 100%;
+    background-color: grey;
+}
+
+#myBar {
+    width: 1%;
+    height: 30px;
+    background-color: green;
+}
