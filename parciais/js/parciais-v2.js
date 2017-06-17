@@ -1,28 +1,16 @@
-function move() {
-	var elem = document.getElementById("myBar"); 
-	var width = qtdReqTotal;
-	var id = setInterval(frame, 10);
-
-	function frame() {
-		if(width > 0 && (qtdReqExecutas < qtdReqTotal)) {
-			elem.style.width = qtdReqTotal/qtdReqExecutas + '%'; 
-		} else {
-			clearInterval(id);
-		}
-		
-		/*if (width >= 100) {
-			clearInterval(id);
-		} else {
-			width++; 
-			elem.style.width = width + '%'; 
-		}*/
-	}
-}
-
 $(document).ready(function() {
-	//move();
 	buscarTimes();
 });
+
+function moverProgressBar() {
+	var elem = document.getElementById("myBar"),
+		qtdReqTotal = 34; // 30 times + 4 requisicoes do $.when
+
+	if(qtdReqTotal > 0 && (qtdReqExecutas <= qtdReqTotal)) {
+		var tam = (qtdReqExecutas*100)/qtdReqTotal + '%';
+		elem.style.width = tam;
+	}
+}
 
 function buscarTimes() {
 	$.when(
@@ -46,9 +34,15 @@ function usufruirDadosColetados(mercado_rodada, parciais, ligaPagina1, ligaPagin
 	}
 
 	coletarTimesDoSite();
-	obterInformacoesDosTimes();
-	ordenarPorPontuacaoGeral();
-	exibirInformacoesDosTimes();
+
+	var intervalo = setInterval(function() {
+		if(timesColetadosSite.length == timesLiga.length) {
+			obterInformacoesDosTimes();
+			ordenarPorPontuacaoGeral();
+			exibirInformacoesDosTimes();
+			clearInterval(intervalo);
+		}
+	}, 100);
 }
 
 function obterInformacoesRodadaMercado(mercado_rodada) {
@@ -176,7 +170,7 @@ function obterPontuacaoNoTurno(time) {
 	var id = time.time.slug,
 		pontos = 0;
 	
-	// In�cio de segundo turno
+	// Inicio de segundo turno
 	if(rodadaAtual == 20) {
 		pontos = 0;
 	} else {
@@ -251,6 +245,8 @@ function exibirInformacoesDosTimes() {
 	    
 	    index += 1;
 	}
+
+	$("div.progress").width(1 + $("#tabela-pontos tbody").width());
 	
 	acionarBotoesOrdenacao();
 }
@@ -262,16 +258,16 @@ function obterPartidasRodada() {
 		cache: false,
 		url: "load-api-v2.php",
 		timeout: 20000,
-		async: false,
 		data: {
     		api: "partidas",
     		rodada: rodadaAtual
     	},
-    	success: function(partidas) {
-    		tentativasM1 = 1;
-			qtdReqExecutas++;
+    	success: function(partidas) {    		
     		partidasCampeonato = {};
-    		partidasCampeonato = partidas;			   
+    		partidasCampeonato = partidas;	
+    		tentativasM1 = 1;
+			//qtdReqExecutas++;
+    		//moverProgressBar(); 
 	    },
     	error: function(jqXHR, textStatus, errorThrown) {
     		if(tentativasM1 < 10) {
@@ -292,15 +288,16 @@ function dadosRequisicaoTime(slug) {
 		cache: false,
 		url: "load-api-v2.php",
 		timeout: 20000,
-		async: false,
 		data: {
     		api: "busca-atletas",
     		team_slug: slug
     	},
-    	success: function(timeSite) {
+    	async: false,
+    	success: function(timeSite) {    		
+    		timesColetadosSite.push(timeSite);  
     		tentativasM2 = 1;
 			qtdReqExecutas++;
-    		timesColetadosSite.push(timeSite);      
+    		moverProgressBar();
 	    },
     	error: function(jqXHR, textStatus, errorThrown) {
     		if(tentativasM2 < 10) {
@@ -323,7 +320,8 @@ function dadosRequisicaoParciais() {
 	    url: "load-api-v2.php?api=parciais-atletas",
 		timeout: 20000,
 		success: function() {
-			qtdReqTotal++;
+			qtdReqExecutas++;
+			moverProgressBar();
 		},
     	error: function(jqXHR, textStatus, errorThrown) {
     		if(tentativasM3 < 10) {
@@ -350,9 +348,11 @@ function dadosRequisicaoLiga(pagina) {
 	    },
 	    timeout: 20000,
 		success: function(timesLiga) {	
-			for(var x in timesLiga.times) {
-				qtdReqTotal++;
-			}
+			//for(var x in timesLiga.times) {
+			//	qtdReqTotal++;
+			//}
+			qtdReqExecutas++;
+			moverProgressBar();
 		},
 	    error: function (jqXHR, textStatus, errorThrown) {
 	    	if(tentativasM4 < 10) {
@@ -375,7 +375,8 @@ function dadosMercadoRodada() {
 	    url: "load-api-v2.php?api=mercado-status",
 	    timeout: 20000,
 		success: function() {
-			qtdReqTotal++;
+			qtdReqExecutas++;
+			moverProgressBar();
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			if(tentativasM5 < 10) {
@@ -409,7 +410,7 @@ var rodadaAtual = 0,
 	timesLiga = [],
 	timesTabela = [],
 	existeFalha = false,
-	qtdReqTotal = 1, //1 referente a obterPartidasRodada() 
+	//qtdReqTotal = 0,
 	qtdReqExecutas = 0,
 	statusMercado = {
 		1:'Mercado aberto!',
@@ -418,4 +419,3 @@ var rodadaAtual = 0,
 	  	4:'Mercado em manuten��o!'
 	};
 	
-
