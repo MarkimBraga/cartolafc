@@ -40,14 +40,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #myProgress {
-    width: 100%;
-    background-color: grey;
+  width: 100%;
+  background-color: grey;
 }
 
 #myBar {
-    width: 1%;
-    height: 1px;
-    background-color: green;
+  width: 1%;
+  height: 1px;
+  background-color: green;
 }
 
 .progress {
@@ -72,4 +72,9 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #f1f1f1!important
 }
 
+.button-small {
+  font-size: 85%;
+  width: 100%;
+  text-align:left;
+}
 

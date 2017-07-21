@@ -221,14 +221,16 @@ function exibirInformacoesDosTimes() {
 	$("#tabela-pontos tbody").empty();
 	
 	for(var x in timesTabela) {
-		var id_nome = timesTabela[x].id + "_nome",
+		var id_time = timesTabela[x].id,
+			id_nome = id_time + "_nome",
 			id_pontuacao_parcial = timesTabela[x].id + "_pontuacao_parcial",
 			id_qtd_pontuados = timesTabela[x].id + "_pontuados",
 			id_pontuacao_geral = timesTabela[x].id + "_pontuacao_geral",
 			id_pontuacao_soma = timesTabela[x].id + "_pontuacao_soma",
+			url_time = 'https://cartolafc.globo.com/#/time/' + id_time,
 			linha = (index % 2 != 0) ? "<tr>" : "<tr class='pure-table-odd'>";
 		
-		linha += "<td>" + index + "</td><td id=" + id_nome + "></td><td id=" + id_qtd_pontuados + "></td><td id=" + id_pontuacao_parcial + "></td><td id=" + id_pontuacao_geral + "></td><td id=" + id_pontuacao_soma + "></td></tr>";
+		linha += "<td>" + index + "</td><td><a class='button-small pure-button' id=" + id_nome + " href=" + url_time + " target='_blank'></a></td><td id=" + id_qtd_pontuados + "></td><td id=" + id_pontuacao_parcial + "></td><td id=" + id_pontuacao_geral + "></td><td id=" + id_pontuacao_soma + "></td></tr>";
 		$("#tabela-pontos tbody").append(linha);
 		
 		var _team_nome = $("#"+id_nome),
