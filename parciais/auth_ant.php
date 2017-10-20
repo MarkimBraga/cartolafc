@@ -7,7 +7,7 @@
   
   header('Content-type: application/json');
   $email = "felipecejug@gmail.com";
-  $password = "felithom12";
+  $password = "xxxabc123";
   $serviceId = 438;
   $url = 'https://login.globo.com/api/authentication';
   $jsonAuth = array(
